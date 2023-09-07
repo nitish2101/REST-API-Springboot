@@ -50,7 +50,6 @@ public class SurveyResource {
     @RequestMapping(value="/surveys/{surveyId}/questions",method= RequestMethod.POST)
     public void addNewSurveyQuestion(@PathVariable String surveyId, @RequestBody Question question){
         surveyService.addNewSurveyQuestion(surveyId,question);
-
     }
 }
 

@@ -26,7 +26,6 @@ public class SurveyService {
 
         Survey survey = new Survey("Survey1", "My Favorite Survey",
                 "Description of the Survey", questions);
-
         surveys.add(survey);
     }
 
@@ -49,7 +48,6 @@ public class SurveyService {
         }
         return survey.getQuestions();
     }
-
     public Question retrieveAQuestionById(String surveyId, String questionId) {
         List<Question> questions = retrieveAllSurveyQuestions(surveyId);
         Optional<Question> optionalQuestion = questions.stream().filter(question -> question.getId().equalsIgnoreCase(questionId)).findFirst();
