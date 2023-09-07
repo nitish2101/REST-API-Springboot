@@ -1,9 +1,12 @@
 package com.nitishspringboot.firstrestapi.survey;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -48,8 +51,11 @@ public class SurveyResource {
 
 
     @RequestMapping(value="/surveys/{surveyId}/questions",method= RequestMethod.POST)
-    public void addNewSurveyQuestion(@PathVariable String surveyId, @RequestBody Question question){
-        surveyService.addNewSurveyQuestion(surveyId,question);
+    public ResponseEntity<Object> addNewSurveyQuestion(@PathVariable String surveyId, @RequestBody Question question){
+        String questionId = surveyService.addNewSurveyQuestion(surveyId, question);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{questionId}").buildAndExpand(questionId).toUri();
+
+        return ResponseEntity.created(null).build();
     }
 }
 

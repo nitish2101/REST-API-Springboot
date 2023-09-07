@@ -2,6 +2,8 @@ package com.nitishspringboot.firstrestapi.survey;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,14 +53,19 @@ public class SurveyService {
     public Question retrieveAQuestionById(String surveyId, String questionId) {
         List<Question> questions = retrieveAllSurveyQuestions(surveyId);
         Optional<Question> optionalQuestion = questions.stream().filter(question -> question.getId().equalsIgnoreCase(questionId)).findFirst();
-        if(optionalQuestion.isEmpty()){
-            return null;
-        }
-        return optionalQuestion.get();
+        return optionalQuestion.orElse(null);
     }
 
-    public void addNewSurveyQuestion(String surveyId, Question question) {
+    public String addNewSurveyQuestion(String surveyId, Question question) {
         List<Question> questions = retrieveAllSurveyQuestions(surveyId);
+        SecureRandom secureRandom = new SecureRandom();
+        generateRandomId(question, secureRandom);
         questions.add(question);
+        return question.getId();
+    }
+
+    private static void generateRandomId(Question question, SecureRandom secureRandom) {
+        String randomId = new BigInteger(32, secureRandom).toString();
+        question.setId(randomId);
     }
 }
