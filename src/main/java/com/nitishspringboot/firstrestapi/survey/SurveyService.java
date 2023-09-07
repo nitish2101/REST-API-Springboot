@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public class SurveyService {
-    private static List<Survey> surveys = new ArrayList<>();
+    private static final List<Survey> surveys = new ArrayList<>();
     static {
         Question question1 = new Question("Question1",
                 "Most Popular Cloud Platform Today", Arrays.asList(
@@ -67,5 +67,17 @@ public class SurveyService {
     private static void generateRandomId(Question question, SecureRandom secureRandom) {
         String randomId = new BigInteger(32, secureRandom).toString();
         question.setId(randomId);
+    }
+
+
+    public String deleteSurveyQuestion(String surveyId, String questionId) {
+        List<Question> questions = retrieveAllSurveyQuestions(surveyId);
+        questions.removeIf(question -> questionId.equalsIgnoreCase(question.getId()));
+//        Predicate<Question> predicate = question -> question.getId().equalsIgnoreCase(questionId);
+//        boolean removed = questions.removeIf(predicate);
+//        if(!removed){
+//            return null;
+//        }
+        return questionId;
     }
 }

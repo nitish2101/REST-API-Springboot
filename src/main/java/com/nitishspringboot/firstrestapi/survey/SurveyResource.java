@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 public class SurveyResource {
-    private SurveyService surveyService;
+    private final SurveyService surveyService;
 
     public SurveyResource(SurveyService surveyService) {
         this.surveyService = surveyService;
@@ -56,6 +56,12 @@ public class SurveyResource {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{questionId}").buildAndExpand(questionId).toUri();
 
         return ResponseEntity.created(null).build();
+    }
+    @RequestMapping(value="/surveys/{surveyId}/questions/{questionId}",method=RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId){
+        surveyService.deleteSurveyQuestion(surveyId,questionId);
+
+        return ResponseEntity.noContent().build();
     }
 }
 
