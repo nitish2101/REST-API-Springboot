@@ -52,8 +52,12 @@ public class SurveyService {
     }
     public Question retrieveAQuestionById(String surveyId, String questionId) {
         List<Question> questions = retrieveAllSurveyQuestions(surveyId);
-        Optional<Question> optionalQuestion = questions.stream().filter(question -> question.getId().equalsIgnoreCase(questionId)).findFirst();
-        return optionalQuestion.orElse(null);
+        for(Question question:questions){
+            if(questionId.equalsIgnoreCase(question.getId())){
+                return question;
+            }
+        }
+        return null;
     }
 
     public String addNewSurveyQuestion(String surveyId, Question question) {
@@ -70,14 +74,14 @@ public class SurveyService {
     }
 
 
-    public String deleteSurveyQuestion(String surveyId, String questionId) {
+    public void deleteSurveyQuestion(String surveyId, String questionId) {
         List<Question> questions = retrieveAllSurveyQuestions(surveyId);
         questions.removeIf(question -> questionId.equalsIgnoreCase(question.getId()));
-//        Predicate<Question> predicate = question -> question.getId().equalsIgnoreCase(questionId);
-//        boolean removed = questions.removeIf(predicate);
-//        if(!removed){
-//            return null;
-//        }
-        return questionId;
+    }
+
+    public void updateSurveyQuestion(String surveyId, String questionId,Question question) {
+        List<Question> questions = retrieveAllSurveyQuestions(surveyId);
+        questions.removeIf(q -> q.getId().equalsIgnoreCase(questionId));
+        questions.add(question);
     }
 }
